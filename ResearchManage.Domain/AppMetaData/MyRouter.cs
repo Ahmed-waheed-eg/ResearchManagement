@@ -19,6 +19,17 @@
 
         }
 
+        public static class User
+        {
+            public const string Prefix = Rule + "User/";
+            public const string list = Prefix + "List";
+            public const string GetById = Prefix + SingleRoute;
+            public const string Create = Prefix + "Create";
+            public const string Edite = Prefix + "Edite";
+            public const string Delete = Prefix + "{id}";
+            public const string Paginated = Prefix + "Paginated";
+
+        }
         public static class Supervisor
         {
             public const string Prefix = Rule + "Supervisor/";

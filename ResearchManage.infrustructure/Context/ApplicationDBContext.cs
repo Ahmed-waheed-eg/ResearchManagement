@@ -1,13 +1,11 @@
-﻿
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ResearchManage.Domain.Entities;
 using ResearchManage.Domain.Entities.Identity;
 
 namespace ResearchManage.Infrustructure.Data
 {
-    public class ApplicationDBContext : IdentityDbContext<User, IdentityRole<int>, int>
+    public class ApplicationDBContext : IdentityDbContext<User>
     {
         public ApplicationDBContext()
         {
