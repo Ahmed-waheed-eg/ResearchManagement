@@ -1,11 +1,8 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
 using ResearchManage.Application.Features.Researchers.Commands.Models;
+using ResearchManage.Domain.Resources;
 using ResearchManage.Services.Abstarcts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ResearchManage.Application.Features.Researchers.Commands.Validation
 {
@@ -13,13 +10,16 @@ namespace ResearchManage.Application.Features.Researchers.Commands.Validation
     {
         #region Fields
         private readonly IScholarServices _scholarServices;
+        private readonly IStringLocalizer<SharedResources> _stringLocalizer;
 
         #endregion
 
         #region Constructors
 
-        public EditeScholarValidation(IScholarServices scholarServices)
+        public EditeScholarValidation(IScholarServices scholarServices, IStringLocalizer<SharedResources> stringLoc)
         {
+            _stringLocalizer = stringLoc;
+
             _scholarServices = scholarServices;
             ApplyValidation();
             ApplyCustomValidation();
@@ -33,7 +33,7 @@ namespace ResearchManage.Application.Features.Researchers.Commands.Validation
         public void ApplyValidation()
         {
             RuleFor(x => x.Name).NotEmpty()
-                .NotNull().WithMessage("name should be not null")
+                .NotNull().WithMessage(_stringLocalizer[SharedResourcesKeys.NotNull])
                 .MaximumLength(30).WithMessage("Max lenth is 30");
             RuleFor(x => x.DepartmentID).GreaterThan(0).WithMessage("must greater then 0");
 
@@ -43,8 +43,8 @@ namespace ResearchManage.Application.Features.Researchers.Commands.Validation
         {
 
             RuleFor(x => x.Name)
-                .MustAsync(async (model, Key, CancellationToken) => await _scholarServices.IsExistExcludeSelf(Key,model.Id))
-                .WithMessage("this name is already exist");
+                .MustAsync(async (model, Key, CancellationToken) => await _scholarServices.IsExistExcludeSelf(Key, model.Id))
+                .WithMessage(_stringLocalizer[SharedResourcesKeys.Exist]);
         }
 
         #endregion

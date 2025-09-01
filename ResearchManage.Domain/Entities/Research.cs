@@ -15,7 +15,7 @@ namespace ResearchManage.Domain.Entities
         public string Abestract {  get; set; }
         public string? Notes { get; set; }
 
-        public int ResearcherID { get; set; }
+        public int ScholarID { get; set; }
         public Scholar scholar { get; set; }
 
         public int SupervisorID { get; set; }

@@ -24,6 +24,8 @@ namespace ResearchManage.Api.Controllers
 
         }
         [HttpGet(MyRouter.ScholarRouting.Paginated)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MyResponse<GetScholarPaginationResponse>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MyResponse<GetScholarPaginationResponse>))]
         public async Task<IActionResult> GetScholarPaginatedList([FromQuery] GetScholarPaginationQuery queey)
         {
 

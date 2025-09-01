@@ -6,16 +6,11 @@ using ResearchManage.Application.ResponseBases;
 using ResearchManage.Domain.Entities;
 using ResearchManage.Domain.Resources;
 using ResearchManage.Services.Abstarcts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ResearchManage.Application.Features.Researchers.Commands.Handlers
 {
     public class AddResearcherCommandHandler : MyResponseHandler,
-        IRequestHandler<AddScholarCommand,MyResponse<string>>,
+        IRequestHandler<AddScholarCommand, MyResponse<string>>,
         IRequestHandler<EditeScholarCommand, MyResponse<string>>,
         IRequestHandler<DeleteScholarCommand, MyResponse<string>>
 
@@ -28,7 +23,7 @@ namespace ResearchManage.Application.Features.Researchers.Commands.Handlers
         #endregion
 
         #region Constructors
-        public AddResearcherCommandHandler(IScholarServices scholarServices, IMapper mapper, IStringLocalizer<SharedResources> stringLoc):base(stringLoc)
+        public AddResearcherCommandHandler(IScholarServices scholarServices, IMapper mapper, IStringLocalizer<SharedResources> stringLoc) : base(stringLoc)
         {
 
             _ScholarServices = scholarServices;
@@ -48,21 +43,21 @@ namespace ResearchManage.Application.Features.Researchers.Commands.Handlers
             var result = await _ScholarServices.AddAsync(scholarmapper);
 
 
-            if (result== "Success") return Created("");
+            if (result == "Success") return Created("");
 
             return BadRequest<string>();
         }
 
         public async Task<MyResponse<string>> Handle(EditeScholarCommand request, CancellationToken cancellationToken)
         {
-            var ScholarExist=await _ScholarServices.GetByIdAsync(request.Id);
+            var ScholarExist = await _ScholarServices.GetByIdAsync(request.Id);
             if (ScholarExist == null) return NotFound<string>("this id not exist");
 
-            var scholarMapper= _mapper.Map( request,ScholarExist);
+            var scholarMapper = _mapper.Map(request, ScholarExist);
 
-            var result= await _ScholarServices.EditeAsync(scholarMapper);
+            var result = await _ScholarServices.EditeAsync(scholarMapper);
 
-             if (result== "Success") return Success($"Edite Successfuly {scholarMapper.ID}");
+            if (result == "Success") return Success($"Edite Successfuly {scholarMapper.ID}");
 
             return BadRequest<string>();
         }

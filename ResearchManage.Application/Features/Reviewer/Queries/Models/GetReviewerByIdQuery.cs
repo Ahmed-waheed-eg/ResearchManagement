@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
+using ResearchManage.Application.Features.Reviewer.Queries.Respones;
+using ResearchManage.Application.ResponseBases;
 
 namespace ResearchManage.Application.Features.Reviewer.Queries.Models
 {
-    public class GetReviewerByIdQuery
+    public class GetReviewerByIdQuery : IRequest<MyResponse<GetReviewerByIdResponse>>
     {
+        public int ID { get; set; }
+
+        public GetReviewerByIdQuery(int id)
+        {
+            ID = id;
+        }
     }
 }

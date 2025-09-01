@@ -11,4 +11,11 @@ namespace ResearchManage.Domain.Helpers
         ScholarID=0,
         DepartmentID=1
     }
+
+    public enum enOrderingResearchEnum
+    {
+        ResearchID=0,
+        ScholarID = 1,
+        DepartmentID = 2
+    }
 }

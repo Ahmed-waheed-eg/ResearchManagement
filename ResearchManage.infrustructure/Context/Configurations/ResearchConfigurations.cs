@@ -20,7 +20,7 @@ namespace ResearchManage.Infrustructure.Data.Configurations
            
             builder.HasOne(r => r.scholar)
                 .WithMany(re => re.Researches)
-                .HasForeignKey(r => r.ResearcherID).OnDelete(DeleteBehavior.NoAction);
+                .HasForeignKey(r => r.ScholarID).OnDelete(DeleteBehavior.NoAction);
             builder.HasOne(r => r.Supervisor).
                 WithMany(s => s.Researches)
                 .HasForeignKey(r => r.SupervisorID).OnDelete(DeleteBehavior.NoAction);

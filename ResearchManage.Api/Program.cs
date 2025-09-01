@@ -1,13 +1,14 @@
-using Microsoft.EntityFrameworkCore;
-using ResearchManage.Infrustructure;
-using ResearchManage.Application;
-using ResearchManage.Services;
-using ResearchManage.Infrustructure.Data;
-using System;
-using ResearchManage.Application.Middleware;
-using System.Globalization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using ResearchManage.Application;
+using ResearchManage.Application.Middleware;
+using ResearchManage.Domain.Entities.Identity;
+using ResearchManage.Infrustructure;
+using ResearchManage.Infrustructure.Data;
+using ResearchManage.Services;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,14 +31,40 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 
 builder.Services.AddInfrastructureDependencies();
 builder.Services.AddServicesDependencies();
-builder.Services.AddApplicationDependencies();
+builder.Services.AddApplicationDependencies()
+                 .AddServicesRegistreration();
+
 #endregion
 
+#region Identity
+builder.Services.AddIdentity<User, IdentityRole>(options =>
+{
+    //Password Settings
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 1;
+
+    //Lockout Settings
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.AllowedForNewUsers = true;
+
+    // User settings.
+    options.User.AllowedUserNameCharacters =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+    options.User.RequireUniqueEmail = true;
+    options.SignIn.RequireConfirmedEmail = false;
+}).AddEntityFrameworkStores<ApplicationDBContext>()
+.AddDefaultTokenProviders();
+#endregion
 
 #region Localization
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddLocalization(opt=>opt.ResourcesPath="");
+builder.Services.AddLocalization(opt => opt.ResourcesPath = "");
 builder.Services.Configure<RequestLocalizationOptions>(option =>
 {
     List<CultureInfo> supportedCulture = new List<CultureInfo>
@@ -50,7 +77,7 @@ builder.Services.Configure<RequestLocalizationOptions>(option =>
     option.SupportedUICultures = supportedCulture;
 
 
-   } );
+});
 
 #endregion
 
@@ -84,9 +111,9 @@ if (app.Environment.IsDevelopment())
 }
 
 #region Localization Middleware
-var optionsLz=app.Services.GetService<IOptions<RequestLocalizationOptions>>();
+var optionsLz = app.Services.GetService<IOptions<RequestLocalizationOptions>>();
 if (optionsLz != null)
-app.UseRequestLocalization(optionsLz.Value);
+    app.UseRequestLocalization(optionsLz.Value);
 #endregion
 
 app.UseMiddleware<ErrorHandlerMiddleware>();

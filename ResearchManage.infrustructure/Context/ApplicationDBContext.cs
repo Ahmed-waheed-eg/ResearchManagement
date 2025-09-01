@@ -1,23 +1,22 @@
 ﻿
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ResearchManage.Domain.Entities;
-using ResearchManage.Infrustructure.Data.Configurations;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+using ResearchManage.Domain.Entities.Identity;
 
 namespace ResearchManage.Infrustructure.Data
 {
-    public class ApplicationDBContext :DbContext
+    public class ApplicationDBContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
+        public ApplicationDBContext()
+        {
 
+        }
         #region DbSets
+        public DbSet<User> Users { get; set; }
         public DbSet<Reviewer> Reviewers { get; set; }
-        public DbSet<Comment> Comments { get; set; }    
+        public DbSet<Comment> Comments { get; set; }
         public DbSet<Admin> admins { get; set; }
         public DbSet<Research> researches { get; set; }
         public DbSet<Scholar> Scholars { get; set; }
@@ -27,11 +26,11 @@ namespace ResearchManage.Infrustructure.Data
         #endregion
 
 
+
         #region Constructors
 
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)
         {
-            //Database.EnsureCreated();
         }
         #endregion
 
@@ -43,7 +42,7 @@ namespace ResearchManage.Infrustructure.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDBContext).Assembly);
-            
+
         }
         #endregion
 

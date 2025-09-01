@@ -22,22 +22,16 @@
 
   <ItemGroup>
     <Folder Include="Features\Admin\Commands\" />
-    <Folder Include="Features\Admin\Queries\Handlers\" />
-    <Folder Include="Features\Admin\Queries\Respones\" />
     <Folder Include="Features\Comment\Commands\" />
-    <Folder Include="Features\Comment\Queries\Handlers\" />
-    <Folder Include="Features\Comment\Queries\Respones\" />
     <Folder Include="Features\Department\Commands\" />
     <Folder Include="Features\Research\Commands\" />
-    <Folder Include="Features\Research\Queries\Handlers\" />
-    <Folder Include="Features\Research\Queries\Respones\" />
     <Folder Include="Features\Reviewer\Commands\" />
-    <Folder Include="Features\Reviewer\Queries\Handlers\" />
-    <Folder Include="Features\Reviewer\Queries\Respones\" />
     <Folder Include="Features\Supervisor\Commands\" />
-    <Folder Include="Features\Supervisor\Queries\Handlers\" />
-    <Folder Include="Features\Supervisor\Queries\Respones\" />
     <Folder Include="Mapping\DepartmentMapping\CommansMapping\" />
+    <Folder Include="Mapping\CommentMapping\" />
+    <Folder Include="Mapping\reviewerMapping\" />
+    <Folder Include="Mapping\ResearchMapping\CommandMapping\" />
+    <Folder Include="Mapping\SupervisorMapping\CommandMapping\" />
   </ItemGroup>
 
 </Project>

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ResearchManage.Domain.Resources
+﻿namespace ResearchManage.Domain.Resources
 {
     public static class SharedResourcesKeys
     {
@@ -13,16 +7,18 @@ namespace ResearchManage.Domain.Resources
         public const string Deleted = "Deleted";
         public const string Created = "Created";
         public const string Success = "Success";
+        public const string NotEmpty = "NotEmpty";
+        public const string NotNull = "NotNull";
+        public const string Exist = "Exist";
+        public const string NotExist = "NotExist";
 
 
         public const string Updated = "Updated";
-        public const string NotEmpty = "Can't be Empty";
-        public const string NotNull = "Can't be Null";
         public const string MaxLength = "Characters Can't be more than";
         public const string AcceptedRange = "Accepted Values only in Range";
         public const string GreaterThan = "Accepted Values only Greater Than";
         public const string GreaterThanOrEqual = "Accepted Values only Greater Than or Equal";
-        public const string Exist = "Already Exist";
+
         public const string ExceedSeatsNumber = "Can't Add Another Seat To This Hall";
         public const string Invalid = "Invalid Id";
         public const string InvalidPhone = "Invalid Number";

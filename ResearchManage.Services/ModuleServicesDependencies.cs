@@ -6,14 +6,19 @@ namespace ResearchManage.Services
 {
     public static class ModuleServicesDependencies
     {
-        
-            public static IServiceCollection AddServicesDependencies(this IServiceCollection services)
-            {
-                services.AddTransient<IScholarServices, ScholarServices>();
-            services.AddTransient<IDepartmentServices, DepartmentServices>();
-                return services;
 
-            }
+        public static IServiceCollection AddServicesDependencies(this IServiceCollection services)
+        {
+            services.AddTransient<IScholarServices, ScholarServices>();
+            services.AddTransient<IDepartmentServices, DepartmentServices>();
+            services.AddTransient<IResearchServices, ResearchServices>();
+            services.AddTransient<ISupervisorServices, SupervisorServices>();
+            services.AddTransient<IReviewerServices, ReviewerServices>();
+            services.AddTransient<ICommentServices, CommentServices>();
+            services.AddTransient<IAdminServices, AdminServices>();
+            return services;
+
+        }
 
 
     }

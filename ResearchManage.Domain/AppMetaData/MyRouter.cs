@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ResearchManage.Domain.AppMetaData
+﻿namespace ResearchManage.Domain.AppMetaData
 {
     public static class MyRouter
     {
@@ -24,6 +18,18 @@ namespace ResearchManage.Domain.AppMetaData
             public const string Paginated = Prefix + "Paginated";
 
         }
+
+        public static class Supervisor
+        {
+            public const string Prefix = Rule + "Supervisor/";
+            public const string list = Prefix + "List";
+            public const string GetById = Prefix + SingleRoute;
+            public const string Create = Prefix + "Create";
+            public const string Edite = Prefix + "Edite";
+            public const string Delete = Prefix + "{id}";
+            public const string Paginated = Prefix + "Paginated";
+
+        }
         public static class DepartmentRouting
         {
             public const string Prefix = Rule + "Department/";
@@ -35,8 +41,22 @@ namespace ResearchManage.Domain.AppMetaData
             public const string Paginated = Prefix + "Paginated";
             public const string Supervisor = Prefix + "Paginated/Subervisors";
             public const string Scholars = Prefix + "Paginated/Scholars";
+            public const string Research = Prefix + "Paginated/Research";
 
 
+
+        }
+
+
+        public static class ResearchRouting
+        {
+            public const string Prefix = Rule + "Research/";
+            public const string list = Prefix + "List";
+            public const string GetById = Prefix + SingleRoute;
+            public const string Create = Prefix + "Create";
+            public const string Edite = Prefix + "Edite";
+            public const string Delete = Prefix + "{id}";
+            public const string Paginated = Prefix + "Paginated";
 
         }
     }

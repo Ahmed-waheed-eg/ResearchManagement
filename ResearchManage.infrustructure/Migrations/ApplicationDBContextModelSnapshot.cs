@@ -116,7 +116,7 @@ namespace ResearchManage.Infrustructure.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ResearcherID")
+                    b.Property<int>("ScholarID")
                         .HasColumnType("int");
 
                     b.Property<int>("SupervisorID")
@@ -131,7 +131,7 @@ namespace ResearchManage.Infrustructure.Migrations
 
                     b.HasIndex("DepartmentID");
 
-                    b.HasIndex("ResearcherID");
+                    b.HasIndex("ScholarID");
 
                     b.HasIndex("SupervisorID");
 
@@ -235,7 +235,7 @@ namespace ResearchManage.Infrustructure.Migrations
 
                     b.HasOne("ResearchManage.Domain.Entities.Scholar", "scholar")
                         .WithMany("Researches")
-                        .HasForeignKey("ResearcherID")
+                        .HasForeignKey("ScholarID")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 

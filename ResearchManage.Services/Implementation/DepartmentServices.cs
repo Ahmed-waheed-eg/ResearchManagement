@@ -1,16 +1,17 @@
-﻿using ResearchManage.Domain.Entities;
-using ResearchManage.Services.Abstarcts;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using ResearchManage.Domain.Entities;
 using ResearchManage.Infrustructure.Abstracts;
+using ResearchManage.Services.Abstarcts;
+
 namespace ResearchManage.Services.Implementation
 {
     public class DepartmentServices(IDepartmentRepository _DepartmentRepository) : IDepartmentServices
     {
         public async Task<Department> GetDepartmentById(int id)
         {
-           var department =await _DepartmentRepository.GetTableNoTracking().Where(d=>d.ID.Equals(id))
-                .Include(d=>d.Scholars)
-                .Include(d=>d.Supervisors).FirstOrDefaultAsync();
+            var department = await _DepartmentRepository.GetTableNoTracking().Where(d => d.ID.Equals(id))
+                 .Include(d => d.Scholars)
+                 .Include(d => d.Supervisors).FirstOrDefaultAsync();
             return department;
         }
 
@@ -32,6 +33,20 @@ namespace ResearchManage.Services.Implementation
             var department = await _DepartmentRepository.GetTableNoTracking().Where(d => d.ID.Equals(id))
                  .Include(d => d.Scholars).FirstOrDefaultAsync();
             return department;
+        }
+        public async Task<bool> IsExist(int id)
+        {
+            return await _DepartmentRepository.GetTableNoTracking().AnyAsync(d => d.ID.Equals(id));
+        }
+
+        public IQueryable<Department> FilterResearchQueryble(string search)
+        {
+            var departments = _DepartmentRepository.GetTableNoTracking().AsQueryable();
+            if (!string.IsNullOrEmpty(search))
+            {
+                departments = departments.Where(d => d.Name.Contains(search) || d.Description.Contains(search));
+            }
+            return departments;
         }
     }
 }

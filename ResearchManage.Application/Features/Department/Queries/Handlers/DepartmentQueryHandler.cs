@@ -3,45 +3,40 @@ using MediatR;
 using Microsoft.Extensions.Localization;
 using ResearchManage.Application.Features.Department.Queries.Models;
 using ResearchManage.Application.Features.Department.Queries.Respones;
-using ResearchManage.Application.Features.Researchers.Queries.Models;
-using ResearchManage.Application.Features.Researchers.Queries.Results;
 using ResearchManage.Application.Pagination;
 using ResearchManage.Application.ResponseBases;
 using ResearchManage.Domain.Entities;
 using ResearchManage.Domain.Resources;
 using ResearchManage.Services.Abstarcts;
-using ResearchManage.Services.Implementation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ResearchManage.Application.Features.Department.Queries.Handlers
 {
     public class DepartmentQueryHandler : MyResponseHandler,
         IRequestHandler<GetDepartmentByIdQuery, MyResponse<GetDepartmentByIdResponse>>,
         IRequestHandler<GetDepartmentByIdWithScholarsQuery, MyResponse<GetDepartmentByIdWithScholarsResponse>>,
-        IRequestHandler<GetDepartmentByIdWithSupervisorQuery,MyResponse<GetDepartmentByIdWithSupervisorRespone>>
+        IRequestHandler<GetDepartmentByIdWithResearchesQuery, MyResponse<GetDepartmentByIdWithResearchesRespone>>,
+        IRequestHandler<GetDepartmentByIdWithSupervisorQuery, MyResponse<GetDepartmentByIdWithSupervisorRespone>>,
+        IRequestHandler<GetAllDepartmentPaginationQuery, PaginatedList<GetAllDepartmentPaginationResnose>>
 
     {
         #region Fileds
         private readonly IDepartmentServices _DepartmentServices;
         private readonly IScholarServices _ScholarServices;
+        private readonly IResearchServices _ResearchServices;
         private readonly IStringLocalizer<SharedResources> _stringLocalizer;
         private readonly IMapper _mapper;
         #endregion
 
         #region Constructors
-        public DepartmentQueryHandler(IDepartmentServices _departmentServices, IMapper mapper, IStringLocalizer<SharedResources> stringLoca, IScholarServices scholarServices) : base(stringLoca)
+        public DepartmentQueryHandler(IDepartmentServices _departmentServices, IMapper mapper, IStringLocalizer<SharedResources> stringLoca, IScholarServices scholarServices, IResearchServices researchServices) : base(stringLoca)
         {
 
             _DepartmentServices = _departmentServices;
             _ScholarServices = scholarServices;
             _mapper = mapper;
             _stringLocalizer = stringLoca;
-
+            _ResearchServices = researchServices;
         }
 
 
@@ -76,26 +71,54 @@ namespace ResearchManage.Application.Features.Department.Queries.Handlers
             var response = await _DepartmentServices.GetDepartmentById(request.DepartmentID);
             if (response == null) return NotFound<GetDepartmentByIdWithScholarsResponse>(_stringLocalizer[SharedResourcesKeys.NotFound]);
 
-            var mapper=new GetDepartmentByIdWithScholarsResponse(response.ID,response.Name);
-            
+            var mapper = new GetDepartmentByIdWithScholarsResponse(response.ID, response.Name);
+
 
 
             Expression<Func<Scholar, ScholarsDTORespons>> expression =
-                e => new ScholarsDTORespons() {ID=e.ID,Name=e.Name,Bio=e.Bio };
+                e => new ScholarsDTORespons() { ID = e.ID, Name = e.Name, Bio = e.Bio };
 
             //var Querable = _scholarServices.GetResearcherQueryable();
             var Querable = _ScholarServices.GetScholarByQueryable(s => s.DepartmentID == request.DepartmentID);
 
             var PaginatedList = await Querable.Select(expression).ToPaginatedListAsync(request.PageNumber, request.PageSize);
-            
+
             mapper.ScholarsList = PaginatedList;
             return Success(mapper);
-           
+
         }
 
         public async Task<MyResponse<GetDepartmentByIdWithSupervisorRespone>> Handle(GetDepartmentByIdWithSupervisorQuery request, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<MyResponse<GetDepartmentByIdWithResearchesRespone>> Handle(GetDepartmentByIdWithResearchesQuery request, CancellationToken cancellationToken)
+        {
+            var response = await _DepartmentServices.GetDepartmentById(request.DepartmentID);
+            if (response == null) return NotFound<GetDepartmentByIdWithResearchesRespone>(_stringLocalizer[SharedResourcesKeys.NotFound]);
+
+            var mapper = new GetDepartmentByIdWithResearchesRespone(response.ID, response.Name, response.Description); ;
+
+            Expression<Func<Domain.Entities.Research, ResearchPagRespon>> expression =
+                e => new ResearchPagRespon(e.ID, e.Title, e.scholar.Name);
+
+            var Querable = _ResearchServices.GetResearchByQueryable(r => r.DepartmentID == response.ID);
+            var PaginatedList = await Querable.Select(expression).ToPaginatedListAsync(request.PageNumber, request.PageSize);
+
+            mapper.ResrchesList = PaginatedList;
+            return Success(mapper);
+
+        }
+
+        public Task<PaginatedList<GetAllDepartmentPaginationResnose>> Handle(GetAllDepartmentPaginationQuery request, CancellationToken cancellationToken)
+        {
+            Expression<Func<Domain.Entities.Department, GetAllDepartmentPaginationResnose>> expression =
+                e => new GetAllDepartmentPaginationResnose(e.ID, e.Name, e.Description);
+            var Querable = _DepartmentServices.FilterResearchQueryble(request.SearchonData);
+            var PaginatedList = Querable.Select(expression).ToPaginatedListAsync(request.PageNumber, request.PageSize);
+            return PaginatedList;
+
         }
 
 

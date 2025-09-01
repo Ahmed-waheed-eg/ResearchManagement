@@ -132,4 +132,16 @@
   <data name="Success" xml:space="preserve">
     <value>تم بنجاح</value>
   </data>
+  <data name="NotNull" xml:space="preserve">
+    <value>هذا الحقل لا يمكن ان يكون فارغ</value>
+  </data>
+  <data name="NotEmpty" xml:space="preserve">
+    <value>هذا الحقل لا يمكن ان يكون فارغ</value>
+  </data>
+  <data name="Exist" xml:space="preserve">
+    <value>موجود بالفعل</value>
+  </data>
+  <data name="NotExist" xml:space="preserve">
+    <value>غير موجود</value>
+  </data>
 </root>
