@@ -12,7 +12,9 @@ using ResearchManage.Domain.Resources;
 namespace ResearchManage.Application.Features.Users.Queries.Handler
 {
     public class UserQueriesHandler : MyResponseHandler,
-      IRequestHandler<GetAllUsersQuery, MyResponse<List<GetAllUsersResponse>>>
+      IRequestHandler<GetAllUsersQuery, MyResponse<List<GetAllUsersResponse>>>,
+               IRequestHandler<GetUserByIdQuery, MyResponse<GetUserByIdResponse>>
+
     {
         #region Fileds
         private readonly UserManager<User> _userManager;
@@ -46,5 +48,21 @@ namespace ResearchManage.Application.Features.Users.Queries.Handler
             return Success(usersList);
         }
 
+        public async Task<MyResponse<GetUserByIdResponse>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
+        {
+            var userMappedIntoResponse = await _userManager.Users.Where(u => u.Id == request.Id)
+        .Select(u => new GetUserByIdResponse
+        {
+            FullName = u.FirstName + " " + u.LastName,
+            Email = u.Email,
+            PhoneNumber = u.PhoneNumber,
+            UserName = u.UserName
+        }).FirstOrDefaultAsync();
+
+            if (userMappedIntoResponse is null)
+                return NotFound<GetUserByIdResponse>(SharedResourcesKeys.NotFound);
+
+            return Success(userMappedIntoResponse);
+        }
     }
 }
