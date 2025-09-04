@@ -8,6 +8,7 @@ namespace ResearchManage.Application.Mapping.UserMapping
         {
 
             CreateUserMapping();
+            EditeUserMapping();
 
         }
     }

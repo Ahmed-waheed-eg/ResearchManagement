@@ -10,7 +10,9 @@ using ResearchManage.Domain.Resources;
 namespace ResearchManage.Application.Features.Users.Command.Handler
 {
     public class UserCommandsHandler : MyResponseHandler,
-        IRequestHandler<CreateUserCommand, MyResponse<string>>
+        IRequestHandler<CreateUserCommand, MyResponse<string>>,
+        IRequestHandler<EditUserCommand, MyResponse<string>>,
+        IRequestHandler<DeleteUserCommand, MyResponse<bool>>
     {
         #region Fileds
         private readonly UserManager<User> _userManager;
@@ -44,5 +46,29 @@ namespace ResearchManage.Application.Features.Users.Command.Handler
             return Success<string>("done");
         }
 
+        public async Task<MyResponse<string>> Handle(EditUserCommand request, CancellationToken cancellationToken)
+        {
+            var oldUser = await _userManager.FindByIdAsync(request.Id);
+            var user = _mapper.Map(request, oldUser);
+
+            var updatedUser = await _userManager.UpdateAsync(user);
+            if (!updatedUser.Succeeded)
+                return BadRequest<string>(updatedUser.Errors.FirstOrDefault().Description);
+            return Success("Successfully");
+
+        }
+
+        public async Task<MyResponse<bool>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+        {
+            var user = await _userManager.FindByIdAsync(request.Id);
+            if (user is null)
+                return NotFound<bool>(_stringLocalizer[SharedResourcesKeys.NotFound]);
+
+            var isDeleted = await _userManager.DeleteAsync(user);
+            if (!isDeleted.Succeeded)
+                return BadRequest<bool>(isDeleted.Errors.FirstOrDefault().Description);
+
+            return Deleted<bool>();
+        }
     }
 }

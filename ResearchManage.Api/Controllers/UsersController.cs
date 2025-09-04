@@ -44,6 +44,15 @@ namespace ResearchManage.Api.Controllers
         #region Command Actions
 
 
+        [HttpPut(MyRouter.User.Edite)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MyResponse<string>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MyResponse<string>))]
+        public async Task<IActionResult> EditUser([FromBody] EditUserCommand model)
+        {
+            var result = await _Mediator.Send(model);
+            return MyResult(result);
+        }
+
         [HttpPost(MyRouter.User.Create)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MyResponse<string>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MyResponse<string>))]
@@ -53,7 +62,14 @@ namespace ResearchManage.Api.Controllers
             return MyResult(result);
         }
 
-
+        [HttpDelete(MyRouter.User.Delete)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MyResponse<bool>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MyResponse<bool>))]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var result = await _Mediator.Send(new DeleteUserCommand() { Id = id });
+            return MyResult(result);
+        }
         #endregion
     }
 }

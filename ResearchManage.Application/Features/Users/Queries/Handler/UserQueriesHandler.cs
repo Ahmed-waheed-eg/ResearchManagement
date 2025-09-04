@@ -44,7 +44,7 @@ namespace ResearchManage.Application.Features.Users.Queries.Handler
                 PhoneNumber = u.PhoneNumber,
                 UserName = u.UserName
             }).ToListAsync();
-
+            if (usersList.Count <= 0) return NotFound<List<GetAllUsersResponse>>(_stringLocalizer[SharedResourcesKeys.NotFound]);
             return Success(usersList);
         }
 
@@ -60,7 +60,7 @@ namespace ResearchManage.Application.Features.Users.Queries.Handler
         }).FirstOrDefaultAsync();
 
             if (userMappedIntoResponse is null)
-                return NotFound<GetUserByIdResponse>(SharedResourcesKeys.NotFound);
+                return NotFound<GetUserByIdResponse>(_stringLocalizer[SharedResourcesKeys.NotFound]);
 
             return Success(userMappedIntoResponse);
         }
