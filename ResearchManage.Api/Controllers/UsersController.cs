@@ -16,7 +16,7 @@ namespace ResearchManage.Api.Controllers
     {
         #region Queries Actions
 
-        [HttpGet(MyRouter.User.list)]
+        [HttpGet(MyRouter.UserRout.list)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(NotFound<string>))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MyResponse<string>))]
         public async Task<IActionResult> GetAllUsersAsync()
@@ -29,7 +29,7 @@ namespace ResearchManage.Api.Controllers
             return MyResult(response);
         }
 
-        [HttpGet(MyRouter.User.GetById)]
+        [HttpGet(MyRouter.UserRout.GetById)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MyResponse<GetUserByIdResponse>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MyResponse<GetUserByIdResponse>))]
         public async Task<IActionResult> GetUserByIdAsync(string id)
@@ -44,7 +44,7 @@ namespace ResearchManage.Api.Controllers
         #region Command Actions
 
 
-        [HttpPut(MyRouter.User.Edite)]
+        [HttpPut(MyRouter.UserRout.Edite)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MyResponse<string>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MyResponse<string>))]
         public async Task<IActionResult> EditUser([FromBody] EditUserCommand model)
@@ -53,7 +53,7 @@ namespace ResearchManage.Api.Controllers
             return MyResult(result);
         }
 
-        [HttpPost(MyRouter.User.Create)]
+        [HttpPost(MyRouter.UserRout.Create)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MyResponse<string>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MyResponse<string>))]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserCommand model)
@@ -62,7 +62,7 @@ namespace ResearchManage.Api.Controllers
             return MyResult(result);
         }
 
-        [HttpDelete(MyRouter.User.Delete)]
+        [HttpDelete(MyRouter.UserRout.Delete)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MyResponse<bool>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MyResponse<bool>))]
         public async Task<IActionResult> DeleteUser(string id)
@@ -70,6 +70,15 @@ namespace ResearchManage.Api.Controllers
             var result = await _Mediator.Send(new DeleteUserCommand() { Id = id });
             return MyResult(result);
         }
+
+        [HttpPut(MyRouter.UserRout.ChangePassword)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MyResponse<bool>))]
+        public async Task<IActionResult> ChangeUserPassword([FromBody] ChangePasswordCommand model)
+        {
+            var result = await _Mediator.Send(model);
+            return MyResult(result);
+        }
+
         #endregion
     }
 }

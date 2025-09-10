@@ -16,6 +16,8 @@ namespace ResearchManage.Services
             services.AddTransient<IReviewerServices, ReviewerServices>();
             services.AddTransient<ICommentServices, CommentServices>();
             services.AddTransient<IAdminServices, AdminServices>();
+            services.AddTransient<IAuthenticationService, AuthenticationService>();
+
             return services;
 
         }

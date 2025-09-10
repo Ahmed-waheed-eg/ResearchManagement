@@ -19,7 +19,17 @@
 
         }
 
-        public static class User
+        public static class AuthenticationRouting
+        {
+            public const string Prefix = Rule + "Authentication/";
+
+            public const string ValidateToken = Prefix + "ValidateToken";
+
+            public const string SignIn = Prefix + "SignIn";
+
+            public const string RefreshToken = Prefix + "RefreshToken";
+        }
+        public static class UserRout
         {
             public const string Prefix = Rule + "User/";
             public const string list = Prefix + "List";
@@ -28,6 +38,7 @@
             public const string Edite = Prefix + "Edite";
             public const string Delete = Prefix + "{id}";
             public const string Paginated = Prefix + "Paginated";
+            public const string ChangePassword = Prefix + "ChangePassword";
 
         }
         public static class Supervisor

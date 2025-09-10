@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ResearchManage.Api.Base;
 using ResearchManage.Application.Features.Researchers.Commands.Models;
@@ -11,15 +12,17 @@ namespace ResearchManage.Api.Controllers
 {
     //[Route("api/[controller]")]
     [ApiController]
+
     public class ScholarConteroller(IMediator _Mediator) : AppControllerBase
     {
         #region Queries Actions
         [HttpGet(MyRouter.ScholarRouting.list)]
+        [Authorize]
         public async Task<IActionResult> GetScholarList()
         {
 
             var response = await _Mediator.Send(new GetScholarsListQuery());
-            
+
             return MyResult(response);
 
         }
@@ -54,9 +57,9 @@ namespace ResearchManage.Api.Controllers
 
 
         #region Queries Actions
-     
+
         [HttpPost(MyRouter.ScholarRouting.Create)]
-        public async Task<IActionResult> Create([FromBody]AddScholarCommand command)
+        public async Task<IActionResult> Create([FromBody] AddScholarCommand command)
         {
             var response = await _Mediator.Send(command);
             return MyResult(response);
