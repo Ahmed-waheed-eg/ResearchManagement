@@ -29,7 +29,7 @@ builder.Services.AddSwaggerGen(c =>
     {
         Title = "Research Managment System",
         Version = "V1",
-        Description = "An API for managing movie reservations, providing endpoints for users to:<br>" +
+        Description = "An API for managing Research, providing endpoints for users to:<br>" +
                       "- Browse Researches <br>",
         Contact = new OpenApiContact()
         {

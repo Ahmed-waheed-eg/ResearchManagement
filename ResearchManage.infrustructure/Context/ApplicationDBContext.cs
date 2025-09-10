@@ -13,6 +13,7 @@ namespace ResearchManage.Infrustructure.Data
         }
         #region DbSets
         public DbSet<User> Users { get; set; }
+        public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
         public DbSet<Reviewer> Reviewers { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Admin> admins { get; set; }

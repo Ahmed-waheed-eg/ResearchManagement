@@ -23,8 +23,6 @@
 
   <ItemGroup>
     <Folder Include="Features\Admin\Commands\" />
-    <Folder Include="Features\Authentication\Queries\Models\" />
-    <Folder Include="Features\Authentication\Queries\Handler\" />
     <Folder Include="Features\Comment\Commands\" />
     <Folder Include="Features\Department\Commands\" />
     <Folder Include="Features\Research\Commands\" />
